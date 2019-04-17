@@ -9,6 +9,7 @@ before_action :admin_user,     only: :destroy
 
   def show
     @user = User.find(params[:id])
+#    @microposts = @user.microposts.paginate(page: params[:page])
   end
 
   def new
@@ -20,7 +21,7 @@ before_action :admin_user,     only: :destroy
  
     if @user.save
             log_in @user
-	    flash[:success] = "欢迎进入益生堂"
+	    flash[:success] = "欢迎进入博客"
       	    redirect_to @user
        	    # 处理注册成功的情况
     else
@@ -57,12 +58,7 @@ before_action :admin_user,     only: :destroy
                                    :password_confirmation)
     end
 
-   def logged_in_user
-      unless logged_in?
-      store_location
-      flash[:danger] = "Please log in."
-      redirect_to login_url
-   end
+  
 
    def correct_user
       @user = User.find(params[:id])
@@ -74,4 +70,3 @@ before_action :admin_user,     only: :destroy
     end
 
    end
-end
