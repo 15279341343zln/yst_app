@@ -7,21 +7,19 @@ class User < ApplicationRecord
                     format:     { with: VALID_EMAIL_REGEX },
                     uniqueness: { case_sensitive: false }
   has_secure_password
-  validates :password, presence: true, length: { minimum: 6 }
+  validates :password, presence: true, length: { minimum: 6 }, allow_nil: true
 
-  class << self
-    # 返回指定字符串的哈希摘要
-  def digest(string)
+  
+   
+  def self.digest(string)
     cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST :
                                                   BCrypt::Engine.cost
     BCrypt::Password.create(string, cost: cost)
   end
 
-  def new_token
+  def self.new_token
     SecureRandom.urlsafe_base64
   end
-
-
 
   def remember
     self.remember_token = User.new_token
@@ -36,5 +34,5 @@ class User < ApplicationRecord
   def forget
     update_attribute(:remember_digest, nil)
   end
-
 end
+
